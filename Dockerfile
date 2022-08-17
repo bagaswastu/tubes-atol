@@ -1,42 +1,32 @@
-# Install dependencies only when needed
-FROM node:16-alpine AS deps
+FROM node:17.7.1-alpine3.15
+
 RUN apk add --no-cache libc6-compat
-WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
 
-# Rebuild the source code only when needed
-FROM node:16-alpine AS builder
-
-WORKDIR /app
-
-COPY --from=deps /node_modules ./node_modules
-
-COPY . .
-
-RUN yarn build
-
-# Production image, copy all the files and run next
-FROM node:16-alpine AS runner
-WORKDIR /app
+RUN npm i -g npm
 
 ENV NODE_ENV production
-
-RUN addgroup --system --gid 1001 bloggroup
-RUN adduser --system --uid 1001 bloguser
-
-COPY --from=builder /public ./public
-COPY --from=builder /package.json ./package.json
-
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=bloguser:bloggroup /.next/standalone ./
-COPY --from=builder --chown=bloguser:bloggroup /.next/static ./.next/static
-
-USER bloguser
+ENV PORT 3000
 
 EXPOSE 3000
 
-ENV PORT 3000
+WORKDIR /home/nextjs/app
 
-CMD ["node", "server.js"]
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
+COPY package.json .
+COPY package-lock.json .
+
+RUN chown -R nextjs:nodejs /home/nextjs
+
+USER nextjs
+
+RUN npm install --no-optional
+RUN npx browserslist@latest --update-db
+RUN npx next telemetry disable
+
+COPY . .
+
+RUN npm run build
+
+CMD [ "npm", "start" ]

@@ -15,7 +15,6 @@ RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
 COPY package.json .
-COPY package-lock.json .
 
 RUN chown -R nextjs:nodejs /home/nextjs
 

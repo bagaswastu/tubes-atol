@@ -106,7 +106,7 @@ const UploadingContainer = ({ photo, onUpload, isLoading }: Props) => {
             </Input.Wrapper>
 
             <Button
-              color="green"
+              color="cyan"
               type="submit"
               size="md"
               disabled={!compressedPhoto}

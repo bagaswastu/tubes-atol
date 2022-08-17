@@ -1,20 +1,14 @@
 import {
   Button,
-  Card,
-  Collapse,
-  Container,
+  Card, Container,
   CopyButton,
   Group,
-  Input,
-  LoadingOverlay,
-  Modal,
-  Stack,
+  Input, Modal,
+  Stack
 } from '@mantine/core';
-import { compressAccurately } from 'image-conversion';
-import { compress as jpegasusCompress } from 'jpegasus';
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
-import { IconCheck, IconLink, IconQrcode } from 'tabler-icons';
+import { IconCheck, IconLink } from 'tabler-icons';
 import HeaderContainer from '../components/HeaderContainer';
 import QrCodeContainer from '../components/QrCodeContainer';
 import UploadContainer from '../components/UploadContainer';
@@ -41,7 +35,7 @@ const Home: NextPage = () => {
     if (state === 'intiial') {
       setPhoto(null);
       setPhotoUrl(null);
-    }else if(state === 'uploaded'){
+    } else if (state === 'uploaded') {
       setPhoto(null);
     }
   }, [state]);
@@ -61,7 +55,7 @@ const Home: NextPage = () => {
         caption,
         countdown: parseInt(duration),
       });
-      
+
       fetch('/api/upload-snap', {
         method: 'POST',
         headers: {
@@ -79,7 +73,7 @@ const Home: NextPage = () => {
         .then((body) => {
           body.id &&
             setPhotoUrl(
-              window.location.hostname + '/snap/' + body.id.toLowerCase()
+              window.location.origin + '/snap/' + body.id.toLowerCase()
             );
           setState('uploaded');
         })
@@ -95,7 +89,7 @@ const Home: NextPage = () => {
     <>
       <Container size="xs">
         <Stack my={40}>
-          <HeaderContainer />
+          <HeaderContainer withSlogan={true} />
           <UploadContainer
             photo={photo}
             setPhoto={setPhoto}
@@ -114,7 +108,6 @@ const Home: NextPage = () => {
       </Container>
       <Modal
         opened={state === 'uploaded'}
-        // opened={true}
         onClose={() => setState('intiial')}
         title="Berhasil diupload! 🎉"
         closeOnEscape={false}
@@ -127,7 +120,7 @@ const Home: NextPage = () => {
               icon={<IconLink />}
               value={photoUrl ?? ''}
               sx={{ flex: 1 }}
-              disabled
+              // disabled
             />
             <CopyButton value={photoUrl ?? ''}>
               {({ copied, copy }) =>
@@ -137,7 +130,7 @@ const Home: NextPage = () => {
                   </Button>
                 ) : (
                   <Button leftIcon={<IconLink />} color="blue" onClick={copy}>
-                    Salin URL
+                    Salin
                   </Button>
                 )
               }

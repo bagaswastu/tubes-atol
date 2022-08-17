@@ -1,10 +1,20 @@
 import { ActionIcon, Group, Stack, Text, Title } from '@mantine/core';
+import { useRouter } from 'next/router';
 import { IconSend } from 'tabler-icons';
 
-const HeaderContainer = () => {
+type Props = {
+  withSlogan: boolean;
+};
+
+const HeaderContainer = (props: Props) => {
+  const router = useRouter();
   return (
-    <Stack align="center" sx={{cursor: 'default'}}>
-      <Group align="center">
+    <Stack align="center">
+      <Group
+        align="center"
+        onClick={() => router.push('/')}
+        sx={{ cursor: 'pointer' }}
+      >
         <ActionIcon variant="filled" color="cyan" size="lg">
           <IconSend />
         </ActionIcon>
@@ -15,7 +25,9 @@ const HeaderContainer = () => {
           </Text>
         </Title>
       </Group>
-      <Text color="grey">Kirim foto kini tak perlu khawatir 😉</Text>
+      {props.withSlogan && (
+        <Text color="grey">Kirim foto kini tak perlu khawatir 😉</Text>
+      )}
     </Stack>
   );
 };

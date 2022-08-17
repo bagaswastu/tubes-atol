@@ -8,9 +8,9 @@ import {
 } from '@mantine/core';
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
-import { IconCheck, IconLink } from 'tabler-icons';
+import { IconCheck, IconCopy, IconLink } from 'tabler-icons';
 import HeaderContainer from '../components/HeaderContainer';
-import QrCodeContainer from '../components/QrCodeContainer';
+import ExtraUrlContainer from '../components/ExtraUrlContainer';
 import UploadContainer from '../components/UploadContainer';
 import UploadingContainer from '../components/UploadingContainer';
 
@@ -108,6 +108,7 @@ const Home: NextPage = () => {
       </Container>
       <Modal
         opened={state === 'uploaded'}
+        // opened={true}
         onClose={() => setState('intiial')}
         title="Berhasil diupload! 🎉"
         closeOnEscape={false}
@@ -129,14 +130,14 @@ const Home: NextPage = () => {
                     URL Disalin
                   </Button>
                 ) : (
-                  <Button leftIcon={<IconLink />} color="blue" onClick={copy}>
+                  <Button leftIcon={<IconCopy />} color="cyan" onClick={copy}>
                     Salin
                   </Button>
                 )
               }
             </CopyButton>
           </Group>
-          {photoUrl && <QrCodeContainer url={photoUrl} />}
+          {photoUrl && <ExtraUrlContainer url={photoUrl} setUrl={setPhotoUrl} />}
         </Stack>
       </Modal>
     </>

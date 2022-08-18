@@ -8,7 +8,7 @@ export default async function handler(
   if (req.method === 'DELETE') {
     const id = req.query.id as string;
 
-    await deleteSnap(id);
+    await deleteSnap(id.toUpperCase());
 
     res.status(200).json({status: 'ok'});
   }

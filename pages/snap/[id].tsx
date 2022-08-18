@@ -5,7 +5,7 @@ import {
   Container,
   Image,
   Stack,
-  Text
+  Text,
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { NavigationProgress, setNavigationProgress } from '@mantine/nprogress';
@@ -22,6 +22,7 @@ const SnapDetail = ({ error, image, caption, countdown: c }: any) => {
   const router = useRouter();
 
   useEffect(() => {
+    if (!isOpen) return;
     const interval = setInterval(() => {
       setCountdown(countdown - 1);
     }, 1000);
